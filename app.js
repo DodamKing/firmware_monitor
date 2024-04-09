@@ -16,6 +16,8 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
+        // const fileName = file.originalname
+        // cb(null, path.basename(fileName, path.extname(fileName)) + '_' + Date.now() + path.extname(fileName))
         cb(null, file.originalname)
     }
 })
@@ -37,12 +39,20 @@ app.post('/upload', upload.single('file'), (req, res, next) => {
     res.redirect('/')
 })
 
+app.get('/delete/:fileName', (req, res) => {
+    const fileName = req.params.fileName
+    const filePath = 'uploads/' + fileName
+    fs.unlinkSync(filePath)
+
+    res.redirect('/')
+})
+
 app.use((req, res, next) => {
     next(createError(404))
 })
 
 app.use((err, req, res, next) => {
-    console.error('err: ', err)
+    console.error(err)
     const msg = err.status === 404 ? '404' : 'server error'
     res.status(err.status || 500).send(msg)
 })
