@@ -3,12 +3,14 @@ const multer = require('multer')
 const path = require('path')
 const createError = require('http-errors')
 const fs = require('fs')
+const logger = require('morgan')
 
 const app = express()
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/')
 
+app.use(logger('dev'))
 app.use(express.static('public'))
 
 const storage = multer.diskStorage({
@@ -16,8 +18,6 @@ const storage = multer.diskStorage({
         cb(null, 'uploads/')
     },
     filename: (req, file, cb) => {
-        // const fileName = file.originalname
-        // cb(null, path.basename(fileName, path.extname(fileName)) + '_' + Date.now() + path.extname(fileName))
         cb(null, file.originalname)
     }
 })
