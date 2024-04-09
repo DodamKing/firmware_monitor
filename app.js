@@ -47,7 +47,7 @@ app.use((err, req, res, next) => {
     res.status(err.status || 500).send(msg)
 })
 
-const port = 3000
+const port = 9981
 app.listen(port, () => {
     console.log(`서버 ${port}에서 대기중`);
 })
